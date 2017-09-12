@@ -1,0 +1,66 @@
+
+////H
+pixels.setPixelColor(0, pixels.Color(1,1,1));
+pixels.setPixelColor(4, pixels.Color(1,1,1));
+pixels.setPixelColor(19, pixels.Color(1,1,1));
+pixels.setPixelColor(23, pixels.Color(1,1,1));
+pixels.setPixelColor(24, pixels.Color(1,1,1));
+pixels.setPixelColor(28, pixels.Color(1,1,1));
+pixels.setPixelColor(43, pixels.Color(1,1,1));
+pixels.setPixelColor(44, pixels.Color(1,1,1));
+pixels.setPixelColor(45, pixels.Color(1,1,1));
+pixels.setPixelColor(46, pixels.Color(1,1,1));
+pixels.setPixelColor(47, pixels.Color(1,1,1));
+pixels.setPixelColor(48, pixels.Color(1,1,1));
+pixels.setPixelColor(52, pixels.Color(1,1,1));
+pixels.setPixelColor(71, pixels.Color(1,1,1));
+pixels.setPixelColor(67, pixels.Color(1,1,1));
+pixels.setPixelColor(72, pixels.Color(1,1,1));
+pixels.setPixelColor(76, pixels.Color(1,1,1));
+
+
+
+///o
+pixels.setPixelColor(7, pixels.Color(1,1,1));
+pixels.setPixelColor(8, pixels.Color(1,1,1));
+pixels.setPixelColor(9, pixels.Color(1,1,1));
+pixels.setPixelColor(17, pixels.Color(1,1,1));
+pixels.setPixelColor(13, pixels.Color(1,1,1));
+pixels.setPixelColor(30, pixels.Color(1,1,1));
+pixels.setPixelColor(34, pixels.Color(1,1,1));
+pixels.setPixelColor(41, pixels.Color(1,1,1));
+pixels.setPixelColor(37, pixels.Color(1,1,1));
+pixels.setPixelColor(54, pixels.Color(1,1,1));
+pixels.setPixelColor(58, pixels.Color(1,1,1));
+pixels.setPixelColor(65, pixels.Color(1,1,1));
+pixels.setPixelColor(61, pixels.Color(1,1,1));
+pixels.setPixelColor(79, pixels.Color(1,1,1));
+pixels.setPixelColor(80, pixels.Color(1,1,1));
+pixels.setPixelColor(81, pixels.Color(1,1,1));
+
+pixels.show();
+
+  
+  filas(0);
+  filas(12);
+  filas(24);
+  filas(36);
+  filas(48);
+  filas(60);
+  filas(72);
+  filas(84);
+
+  
+}
+
+
+void filas(int aux){
+  
+  for(int i=0;i<12;i++){ 
+    pixels.setPixelColor(aux, pixels.Color(0,0,1)); 
+    pixels.show();
+    delay(50);
+    pixels.setPixelColor(aux, pixels.Color(0,0,0));
+    pixels.show();
+    aux++;
+}

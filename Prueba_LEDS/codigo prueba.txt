@@ -1,0 +1,83 @@
+/*1
+  // Bucle 'Serpiente' (para probarlo)
+  
+for(int i=0;i<96;i++){
+  
+  pixels.setPixelColor(i, pixels.Color(1,1,1)); 
+  delay(10);
+  pixels.show();
+}
+
+
+for(int i=0;i<96;i++){
+  
+  pixels.setPixelColor(i, pixels.Color(10,10,10)); 
+  delay(10);
+  pixels.show();
+}
+
+for(int i=0;i<96;i++){
+  
+  pixels.setPixelColor(i, pixels.Color(0,0,0)); 
+  delay(10);
+  pixels.show();
+}
+1*/
+
+
+
+
+
+
+  /*2
+  //Programa de Colores de 'D.A.N.I.'
+for(int i=0;i<96;i++){
+  
+  pixels.setPixelColor(i, pixels.Color(0,0,10)); 
+
+   
+}
+pixels.show();
+delay(500);
+
+
+
+for(int i=0;i<96;i++){
+ 
+  pixels.setPixelColor(i, pixels.Color(0,10,0)); 
+ 
+}
+pixels.show();
+delay(500);
+
+
+for(int i=0;i<96;i++){
+ 
+  pixels.setPixelColor(i, pixels.Color(10,0,0)); 
+ 
+}
+pixels.show();
+delay(500);
+
+
+
+for(int i=0;i<96;i++){ 
+  pixels.setPixelColor(i, pixels.Color(10,10,0));  
+}
+pixels.show();
+delay(500);
+
+
+for(int i=0;i<96;i++){ 
+  pixels.setPixelColor(i, pixels.Color(10,0,10)); 
+}
+pixels.show();
+delay(500); 
+  
+
+for(int i=0;i<96;i++){ 
+  pixels.setPixelColor(i, pixels.Color(0,10,10)); 
+}
+pixels.show();
+delay(500);
+2*/
