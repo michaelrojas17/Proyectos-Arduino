@@ -27,7 +27,7 @@
 /************************* LEDS Matrix   *********************************/
 
 #define PIN 14 //Placa Mia
-//#define PIN 20 //NodeMCU
+//#define PIN 19 //NodeMCU
 
 /************************* Adafruit.io Setup *********************************/
 
