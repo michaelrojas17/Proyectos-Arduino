@@ -21,8 +21,20 @@
 
 /************************* WiFi Access Point *********************************/
 
+///*********home Wifi**********
+
 #define WLAN_SSID       "vodafone790E"
 #define WLAN_PASS       "BXVISBZUNLQNP4"
+
+///*********Android Wifi**********
+
+//#define WLAN_SSID       "Mike_wifi"
+//#define WLAN_PASS       "123456789:"
+
+///*********Projects Labs Wifi**********
+
+//#define WLAN_SSID       "Wifi_Lab_Proyectos"
+//#define WLAN_PASS       "R3B00TY0URM1ND"
 
 /************************* LEDS Matrix   *********************************/
 
