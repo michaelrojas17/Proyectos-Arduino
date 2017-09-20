@@ -41,12 +41,12 @@
 #define PIN 14 //Placa Mia
 
 
-/************************* Adafruit.io Configuration // Configuracion del Broker MQTT *********************************/
+/************************* Configuracion del Broker MQTT *********************************/
 
-#define AIO_SERVER      "io.adafruit.com"
-#define AIO_SERVERPORT  1883                   // use 8883 for SSL
-#define AIO_USERNAME    "mike921217"
-#define AIO_KEY         "62d2cbedd8c346cc8bfb4c029b26fcc3"
+#define BROKER_SERVER      "192.168.0.150"
+#define BROKER_SERVERPORT  1883                   // use 8883 for SSL
+#define BROKER_USERNAME    "mike921217"
+#define BROKER_PASS         "921217"
 
 //-------------------VARIABLES GLOBALES--------------------------
 int contconexion = 0;
@@ -71,7 +71,7 @@ ESP8266WebServer server(80);
 
 
 // Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
-Adafruit_MQTT_Client mqtt(&espClient, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+Adafruit_MQTT_Client mqtt(&espClient, BROKER_SERVER, BROKER_SERVERPORT, BROKER_USERNAME, BROKER_PASS);
 
 
 //MATRIX DECLARATION:
@@ -86,9 +86,9 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(12, 8, PIN,
 
 // subscribing topics
 
-Adafruit_MQTT_Subscribe Light = Adafruit_MQTT_Subscribe(&mqtt,AIO_USERNAME "/feeds/Light");
-Adafruit_MQTT_Subscribe Mensaje = Adafruit_MQTT_Subscribe(&mqtt,AIO_USERNAME "/feeds/Mensaje");
-Adafruit_MQTT_Subscribe ColorLEDS = Adafruit_MQTT_Subscribe(&mqtt,AIO_USERNAME "/feeds/Color");
+Adafruit_MQTT_Subscribe Light = Adafruit_MQTT_Subscribe(&mqtt,"Light");
+Adafruit_MQTT_Subscribe Mensaje = Adafruit_MQTT_Subscribe(&mqtt,"Mensaje");
+Adafruit_MQTT_Subscribe ColorLEDS = Adafruit_MQTT_Subscribe(&mqtt,"Color");
 
 /*************************** Sketch Code ************************************/
 
