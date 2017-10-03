@@ -38,13 +38,15 @@
 
 /************************* LEDS Matrix Control PIN   *********************************/
 
-#define PIN 14 //Placa Mia
+#define PIN 14 //Placa 
 
 
 /************************* Configuracion del Broker MQTT *********************************/
 
-#define BROKER_SERVER      "192.168.0.150"
-#define BROKER_SERVERPORT  1883                   // use 8883 for SSL
+//#define BROKER_SERVER      "192.168.0.150"
+//#define BROKER_SERVER      "wifi-lights-control-broker.etowns.net"
+#define BROKER_SERVER      "wledscontrolbroker.ddns.net"
+#define BROKER_SERVERPORT  1883                   
 #define BROKER_USERNAME    "mike921217"
 #define BROKER_PASS         "921217"
 
@@ -86,7 +88,7 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(12, 8, PIN,
 
 // subscribing topics
 
-Adafruit_MQTT_Subscribe Light = Adafruit_MQTT_Subscribe(&mqtt,"Light");
+Adafruit_MQTT_Subscribe Modo = Adafruit_MQTT_Subscribe(&mqtt,"Modo");
 Adafruit_MQTT_Subscribe Mensaje = Adafruit_MQTT_Subscribe(&mqtt,"Mensaje");
 Adafruit_MQTT_Subscribe ColorLEDS = Adafruit_MQTT_Subscribe(&mqtt,"Color");
 
@@ -103,6 +105,7 @@ void MQTT_connect();
 //------------------------SETUP WIFI-----------------------------
 void setup_wifi() {
 // Conexión WIFI
+  pinMode(2, OUTPUT);
   WiFi.mode(WIFI_STA); //para que no inicie el SoftAP en el modo normal
   WiFi.begin(ssid, pass);
   while (WiFi.status() != WL_CONNECTED and contconexion <50) { //Cuenta hasta 50 si no se puede conectar lo cancela
@@ -114,16 +117,23 @@ void setup_wifi() {
       Serial.println("");
       Serial.println("WiFi conectado");
       Serial.println(WiFi.localIP());
+      digitalWrite(2, HIGH);
      }
   else { 
       Serial.println("");
       Serial.println("Error de conexion");
+      modoconf();
   }
+
+ 
 }
 
 
 //--------------------MODO_CONFIGURACION------------------------
 void modoconf() {
+
+
+  pinMode(2, OUTPUT);
    
 
   WiFi.mode(WIFI_AP);
@@ -141,6 +151,10 @@ void modoconf() {
 
   while (true) {
       server.handleClient();
+      digitalWrite(2, HIGH);   // turn the LED on (HIGH is the voltage level)
+      delay(1000);                       // wait for a second
+      digitalWrite(2, LOW);    // turn the LED off by making the voltage LOW
+      delay(1000);
   }
 }
 
@@ -154,6 +168,8 @@ void guardar_conf() {
 
   mensaje = "Configuracion Guardada..";
   server.send(200, "text/html",  mensaje);
+
+  
 }
 
 //----------------Función para grabar en la EEPROM-------------------
@@ -164,10 +180,16 @@ void grabar(int addr, String a) {
   for (int i = 0; i < tamano; i++) {
     EEPROM.write(addr+i, inchar[i]);
   }
+
+  
   for (int i = tamano; i < 50; i++) {
-    EEPROM.write(addr+i, 255);
-  }
+       EEPROM.write(addr+i, 255);  
+   }
+  //al grabar las credenciales activamos el inicio en Modo Normal
+   EEPROM.write(100, 0); 
+   
   EEPROM.commit();
+ 
 }
 
 //-----------------Función para leer la EEPROM------------------------
@@ -184,7 +206,7 @@ String leer(int addr) {
 }
 
 
-
+byte modo;
 
 void setup() {
 
@@ -200,24 +222,34 @@ void setup() {
   // MQTT and ESP initialization 
   Serial.begin(115200);
   delay(10);
+
+
+
+  modo = EEPROM.read(100);
   
 
 
-  pinMode(14, INPUT_PULLUP);  //Pin de datos como entrada-->si PIN==0 configuracion de WIFI sino-->funcionamiento normal
-  if (digitalRead(14) == 1) {
+  //pinMode(14, INPUT_PULLUP);  //Pin de datos como entrada-->si PIN==0 configuracion de WIFI sino-->funcionamiento normal
+  if (modo == 255) {
     modoconf();
   }
 
   pinMode(14, OUTPUT);
+  
+  
 
   leer(0).toCharArray(ssid, 50);
+  Serial.print(ssid);
+  Serial.print(" ");
+  
   leer(50).toCharArray(pass, 50);
+  Serial.print(pass);
 
   setup_wifi();
 
 
   // Setup MQTT subscription for onoff feed.
-  mqtt.subscribe(&Light);
+  mqtt.subscribe(&Modo);
   mqtt.subscribe(&Mensaje);
   mqtt.subscribe(&ColorLEDS);
   
@@ -228,6 +260,7 @@ int x = matrix.width();
 int pasar;
 String textoRecibido;
 String ColorRecibido;
+String ModoRecibido;
 
 
 void loop() {
@@ -237,14 +270,29 @@ void loop() {
   MQTT_connect();
 
   
-
+  digitalWrite(2, HIGH);
   Adafruit_MQTT_Subscribe *subscription;
   
   while ((subscription = mqtt.readSubscription(50))) {
-    if (subscription == &Light) {
-      Serial.print(F("Got_Light: "));
-      Serial.println((char *)Light.lastread);
-      uint16_t num = atoi((char *)Light.lastread);
+    if (subscription == &Modo) {
+
+      ModoRecibido =(char *)Modo.lastread;
+      if(ModoRecibido=="FF"){
+
+         //si recibimos este mensaje, activamos la opcion de inicion en modo configuracion
+           EEPROM.write(100, 255);
+           EEPROM.commit();
+        
+      }else if(M
+      odoRecibido=="00"){
+         //si recibimos este mensaje, DESACTIVAMOS la opcion de inicion en modo configuracion
+           EEPROM.write(100, 0);
+           EEPROM.commit();
+        
+        
+      }
+      
+     
 
   
     }else if(subscription == &Mensaje){
@@ -297,7 +345,7 @@ void loop() {
  
   mostrarTexto();
 
-
+  digitalWrite(2, HIGH);
 
   
 
@@ -359,8 +407,9 @@ void MQTT_connect() {
        retries--;
        if (retries == 0) {
          // basically die and wait for WDT to reset me
-         while (1);
        }
   }
   Serial.println("MQTT Connected!");
+   
+  
 }
